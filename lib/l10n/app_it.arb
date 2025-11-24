@@ -1,3 +1,23 @@
 {
-    "helloWorld": "Ciao Mondo!"
+    "helloWorld": "Ciao Mondo!",
+
+    "calendarName": "Calendario",
+    "clientsName": "Clienti",
+    "settingsName": "Impostazioni",
+
+    "noClientsMessage": "Nessun cliente presente. Aggiungine uno!",
+    "noPhoneNumberMessage": "Nessun numero di telefono",
+    "newClientNamePlacheholder": "Nuovo Cliente",
+
+    "name": "Nome",
+    "surname": "Cognome",
+    "phoneNumber": "Numero di telefono",
+    "email": "Email",
+    "address": "Indirizzo",
+
+    "pleaseInsertName": "Inserisci il nome",
+    "pleaseInsertSurname": "Inserisci il cognome",
+    "pleaseInsertPhoneNumber": "Inserisci il numero di telefono",
+    "pleaseInsertEmail": "Inserisci l'email",
+    "pleaseInsertAddress": "Inserisci l'indirizzo"
 }

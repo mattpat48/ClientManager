@@ -1,38 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'l10n/app_localizations.dart';
+import 'home_screen.dart';
+import 'src/client_provider.dart';
 
 void main() {
-  runApp(
-	MaterialApp(
+  	runApp(
+		ChangeNotifierProvider(
+			create: (context) => ClientProvider(),
+			child: const MyApp(),
+		),
+	);
+}
+
+class MyApp extends StatelessWidget {
+	const MyApp({super.key});
+
+	@override
+	Widget build(BuildContext context) {
+		return MaterialApp(
 		localizationsDelegates: AppLocalizations.localizationsDelegates,
 		supportedLocales: AppLocalizations.supportedLocales,
-		home: MainApp(),
-	));
-}
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
-  
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
+		theme: ThemeData(
+			primarySwatch: Colors.blue,
+			visualDensity: VisualDensity.adaptivePlatformDensity,
+		),
 
-class _MainAppState extends State<MainApp> {
-	final _key = GlobalKey<ScaffoldState>();
-
-    @override
-    Widget build(BuildContext context) {
-      	return MaterialApp(
-			localizationsDelegates: AppLocalizations.localizationsDelegates,
-        	supportedLocales: AppLocalizations.supportedLocales,
-			home: Scaffold(
-				key: _key,
-          		appBar: AppBar(
-            		title: Text(AppLocalizations.of(context)!.helloWorld),
-          		),
-          		body: const Center(),
-        	),
-      	);
-    }
+		home: const HomeScreen(),
+		);
+	}
 }

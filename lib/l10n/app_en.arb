@@ -1,6 +1,23 @@
 {
     "helloWorld": "Hello World!",
-    "@helloWorld": {
-      "description": "The conventional newborn programmer greeting"
-    }
+
+    "calendarName": "Calendar",
+    "clientsName": "Clients",
+    "settingsName": "Settings",
+    
+    "noClientsMessage": "No clients found. Add a new one!",
+    "noPhoneNumberMessage": "No phone number",
+    "newClientNamePlacheholder": "New Client",
+
+    "name": "Name",
+    "surname": "Surname",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "address": "Address",
+
+    "pleaseInsertName": "Please insert a name",
+    "pleaseInsertSurname": "Please insert a surname",
+    "pleaseInsertPhoneNumber": "Please insert a phone number",
+    "pleaseInsertEmail": "Please insert an email",
+    "pleaseInsertAddress": "Please insert an address"
 }

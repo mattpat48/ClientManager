@@ -98,11 +98,107 @@ abstract class AppLocalizations {
     Locale('it'),
   ];
 
-  /// The conventional newborn programmer greeting
+  /// No description provided for @helloWorld.
   ///
   /// In en, this message translates to:
   /// **'Hello World!'**
   String get helloWorld;
+
+  /// No description provided for @calendarName.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendarName;
+
+  /// No description provided for @clientsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients'**
+  String get clientsName;
+
+  /// No description provided for @settingsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsName;
+
+  /// No description provided for @noClientsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No clients found. Add a new one!'**
+  String get noClientsMessage;
+
+  /// No description provided for @noPhoneNumberMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number'**
+  String get noPhoneNumberMessage;
+
+  /// No description provided for @newClientNamePlacheholder.
+  ///
+  /// In en, this message translates to:
+  /// **'New Client'**
+  String get newClientNamePlacheholder;
+
+  /// No description provided for @name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get name;
+
+  /// No description provided for @surname.
+  ///
+  /// In en, this message translates to:
+  /// **'Surname'**
+  String get surname;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @address.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get address;
+
+  /// No description provided for @pleaseInsertName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert a name'**
+  String get pleaseInsertName;
+
+  /// No description provided for @pleaseInsertSurname.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert a surname'**
+  String get pleaseInsertSurname;
+
+  /// No description provided for @pleaseInsertPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert a phone number'**
+  String get pleaseInsertPhoneNumber;
+
+  /// No description provided for @pleaseInsertEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert an email'**
+  String get pleaseInsertEmail;
+
+  /// No description provided for @pleaseInsertAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert an address'**
+  String get pleaseInsertAddress;
 }
 
 class _AppLocalizationsDelegate
