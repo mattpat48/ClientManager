@@ -30,13 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-		appBar: AppBar(
-			title: Text([
-			AppLocalizations.of(context)!.calendarName,
-			AppLocalizations.of(context)!.clientsName,
-			AppLocalizations.of(context)!.settingsName,
-			][_selectedIndex]),
-		),
 		body: _screenOptions.elementAt(_selectedIndex),
 		bottomNavigationBar: BottomNavigationBar(
 			items: <BottomNavigationBarItem>[

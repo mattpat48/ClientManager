@@ -20,5 +20,16 @@
     "pleaseInsertPhoneNumber": "Please insert a phone number",
     "pleaseInsertEmail": "Please insert an email",
     "pleaseInsertAddress": "Please insert an address",
-    "removeClientConfirmation": "Do you really want to remove this client?"
+    "removeClientConfirmation": "Do you really want to remove this client?",
+
+    "appointments": "Appointments",
+    "noAppointmentsMessage": "No appointments found. Add a new one!",
+
+    "servicesName": "Services",
+    "noServicesMessage": "No services found. Add a new one!",
+    "newServiceNamePlaceholder": "New Service",
+    "price": "Price",
+    "time": "Time",
+    "pleaseInsertPrice": "Please insert a price",
+    "removeServiceConfirmation": "Do you really want to remove this service?"
 }

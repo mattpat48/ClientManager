@@ -205,6 +205,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do you really want to remove this client?'**
   String get removeClientConfirmation;
+
+  /// No description provided for @appointments.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get appointments;
+
+  /// No description provided for @noAppointmentsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments found. Add a new one!'**
+  String get noAppointmentsMessage;
+
+  /// No description provided for @servicesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get servicesName;
+
+  /// No description provided for @noServicesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No services found. Add a new one!'**
+  String get noServicesMessage;
+
+  /// No description provided for @newServiceNamePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'New Service'**
+  String get newServiceNamePlaceholder;
+
+  /// No description provided for @price.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get price;
+
+  /// No description provided for @time.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get time;
+
+  /// No description provided for @pleaseInsertPrice.
+  ///
+  /// In en, this message translates to:
+  /// **'Please insert a price'**
+  String get pleaseInsertPrice;
+
+  /// No description provided for @removeServiceConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you really want to remove this service?'**
+  String get removeServiceConfirmation;
 }
 
 class _AppLocalizationsDelegate

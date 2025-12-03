@@ -20,5 +20,16 @@
     "pleaseInsertPhoneNumber": "Inserisci il numero di telefono",
     "pleaseInsertEmail": "Inserisci l'email",
     "pleaseInsertAddress": "Inserisci l'indirizzo",
-    "removeClientConfirmation": "Eliminare definitivamente questo cliente?"
+    "removeClientConfirmation": "Eliminare definitivamente questo cliente?",
+
+    "appointments": "Appuntamenti",
+    "noAppointmentsMessage": "Nessun appuntamento presente.",
+
+    "servicesName": "Servizi",
+    "noServicesMessage": "Nessun servizio presente. Aggiungine uno!",
+    "newServiceNamePlaceholder": "Nuovo Servizio",
+    "price": "Prezzo",
+    "time": "Tempo",
+    "pleaseInsertPrice": "Inserisci un prezzo",
+    "removeServiceConfirmation": "Eliminare definitivamente questo servizio?"
 }

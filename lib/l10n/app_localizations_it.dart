@@ -62,4 +62,32 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get removeClientConfirmation =>
       'Eliminare definitivamente questo cliente?';
+
+  @override
+  String get appointments => 'Appuntamenti';
+
+  @override
+  String get noAppointmentsMessage => 'Nessun appuntamento presente.';
+
+  @override
+  String get servicesName => 'Servizi';
+
+  @override
+  String get noServicesMessage => 'Nessun servizio presente. Aggiungine uno!';
+
+  @override
+  String get newServiceNamePlaceholder => 'Nuovo Servizio';
+
+  @override
+  String get price => 'Prezzo';
+
+  @override
+  String get time => 'Tempo';
+
+  @override
+  String get pleaseInsertPrice => 'Inserisci un prezzo';
+
+  @override
+  String get removeServiceConfirmation =>
+      'Eliminare definitivamente questo servizio?';
 }
