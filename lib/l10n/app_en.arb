@@ -19,5 +19,6 @@
     "pleaseInsertSurname": "Please insert a surname",
     "pleaseInsertPhoneNumber": "Please insert a phone number",
     "pleaseInsertEmail": "Please insert an email",
-    "pleaseInsertAddress": "Please insert an address"
+    "pleaseInsertAddress": "Please insert an address",
+    "removeClientConfirmation": "Do you really want to remove this client?"
 }

@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import '../json_storage_provider.dart';
 
-class Client {
+class Client implements JsonSerializable {
 	final String id;
 	final String name;
 	final String? phoneNumber;
@@ -19,6 +19,7 @@ class Client {
 		);
 	}
 
+	@override
 	Map<String, dynamic> toJson() {
 		return {
 			'id': id,

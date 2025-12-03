@@ -1,0 +1,5 @@
+1. Definire Eventi
+2. Definire logica aggiornamento e aggiunta Eventi (quindi eventuale classe "editable" estendibile)
+3. Definire sistema di aggiunte servizi (come classe o enum banale con costo nome e tempo richiesto)
+4. Associare ad ogni cliente una lista di eventi e ad ogni evento un cliente
+5. Mostrare la schermata utente finale

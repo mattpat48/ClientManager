@@ -65,9 +65,42 @@ class _ClientsScreenState extends State<ClientsScreen> {
 		);
 	}
 
+  Future<void> _showRemoveClientDialog(Client client) async {
+		return showDialog<void>(
+			context: context,
+			builder: (BuildContext context) {
+				return AlertDialog(
+					title: Text(client.name),
+					content: Text(AppLocalizations.of(context)!.removeClientConfirmation),
+					actions: [
+						Row(
+							mainAxisAlignment: MainAxisAlignment.spaceBetween,
+							children: <Widget>[
+								TextButton(
+									child: const Icon(Icons.close),
+									onPressed: () => Navigator.of(context).pop(),
+								),
+								TextButton(
+									child: const Icon(Icons.check),
+									onPressed: () {
+										context.read<ClientProvider>().removeClient(client.id);
+										Navigator.of(context).pop();
+									},
+								),
+							],
+						)
+					],
+				);
+			},
+		);
+	}
+
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.clientsName),
+      ),
 			body: Consumer<ClientProvider>(
 				builder: (context, clientProvider, child) {
 					if (clientProvider.clients.isEmpty) {
@@ -85,6 +118,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
 								title: Text(client.name),
 								subtitle: Text(client.phoneNumber ?? AppLocalizations.of(context)!.noPhoneNumberMessage),
 								onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClientScreen(client: client,))),
+                onLongPress: () => _showRemoveClientDialog(client),
 							);
 						},
 					);

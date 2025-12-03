@@ -58,4 +58,8 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get pleaseInsertAddress => 'Inserisci l\'indirizzo';
+
+  @override
+  String get removeClientConfirmation =>
+      'Eliminare definitivamente questo cliente?';
 }

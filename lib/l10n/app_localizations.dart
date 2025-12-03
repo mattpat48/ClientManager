@@ -199,6 +199,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please insert an address'**
   String get pleaseInsertAddress;
+
+  /// No description provided for @removeClientConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you really want to remove this client?'**
+  String get removeClientConfirmation;
 }
 
 class _AppLocalizationsDelegate
