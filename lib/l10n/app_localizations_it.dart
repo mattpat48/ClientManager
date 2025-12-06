@@ -131,4 +131,40 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get removeEventConfirmation =>
       'Eliminare definitivamente questo appuntamento?';
+
+  @override
+  String get last7days => 'Ultimi 7 giorni';
+
+  @override
+  String get last30days => 'Ultimi 30 giorni';
+
+  @override
+  String get totalStats => 'Totale';
+
+  @override
+  String get customerServed => 'Clienti serviti';
+
+  @override
+  String get earnings => 'Guadagni';
+
+  @override
+  String get clientUsage => 'Uso dei clienti';
+
+  @override
+  String get unknown => 'Sconosciuto';
+
+  @override
+  String get statistics => 'Statistiche';
+
+  @override
+  String get avgExpensePerAppointment => 'Spesa media per appuntamento';
+
+  @override
+  String get usedServices => 'Servizi Utilizzati';
+
+  @override
+  String get totalIncomePerService => 'Guadagno totale per servizio';
+
+  @override
+  String get editClient => 'Modifica cliente';
 }

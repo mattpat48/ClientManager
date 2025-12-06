@@ -49,6 +49,22 @@
     "removeServiceConfirmation": "Eliminare definitivamente questo servizio?",
 
     "newEventName": "Nuovo Appuntamento",
-    "removeEventConfirmation": "Eliminare definitivamente questo appuntamento?"
+    "removeEventConfirmation": "Eliminare definitivamente questo appuntamento?",
+
+    "last7days": "Ultimi 7 giorni",
+    "last30days": "Ultimi 30 giorni",
+    "totalStats": "Totale",
+    
+    "customerServed": "Clienti serviti",
+    "earnings": "Guadagni",
+    
+    "clientUsage": "Uso dei clienti",
+    "unknown": "Sconosciuto",
+
+    "statistics": "Statistiche",
+    "avgExpensePerAppointment": "Spesa media per appuntamento",
+    "usedServices": "Servizi Utilizzati",
+    "totalIncomePerService": "Guadagno totale per servizio",
+    "editClient": "Modifica cliente"
 
 }

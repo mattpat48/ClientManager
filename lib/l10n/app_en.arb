@@ -49,5 +49,21 @@
     "removeServiceConfirmation": "Do you really want to remove this service?",
 
     "newEventName": "New Event",
-    "removeEventConfirmation": "Do you really want to remove this event?"
+    "removeEventConfirmation": "Do you really want to remove this event?",
+
+    "last7days": "Last 7 days",
+    "last30days": "Last 30 days",
+    "totalStats": "All Time",
+    
+    "customerServed": "Served customers",
+    "earnings": "Earnings",
+
+    "clientUsage": "Most frequent customers",
+    "unknown": "Unknown",
+
+    "statistics": "Statistics",
+    "avgExpensePerAppointment": "Average expense per appointment",
+    "usedServices": "Utilized Services",
+    "totalIncomePerService": "Total income per service",
+    "editClient": "Edit customer"
 }

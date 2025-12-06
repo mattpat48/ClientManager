@@ -337,6 +337,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do you really want to remove this event?'**
   String get removeEventConfirmation;
+
+  /// No description provided for @last7days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get last7days;
+
+  /// No description provided for @last30days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get last30days;
+
+  /// No description provided for @totalStats.
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get totalStats;
+
+  /// No description provided for @customerServed.
+  ///
+  /// In en, this message translates to:
+  /// **'Served customers'**
+  String get customerServed;
+
+  /// No description provided for @earnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings'**
+  String get earnings;
+
+  /// No description provided for @clientUsage.
+  ///
+  /// In en, this message translates to:
+  /// **'Most frequent customers'**
+  String get clientUsage;
+
+  /// No description provided for @unknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknown;
+
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// No description provided for @avgExpensePerAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Average expense per appointment'**
+  String get avgExpensePerAppointment;
+
+  /// No description provided for @usedServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Utilized Services'**
+  String get usedServices;
+
+  /// No description provided for @totalIncomePerService.
+  ///
+  /// In en, this message translates to:
+  /// **'Total income per service'**
+  String get totalIncomePerService;
+
+  /// No description provided for @editClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit customer'**
+  String get editClient;
 }
 
 class _AppLocalizationsDelegate

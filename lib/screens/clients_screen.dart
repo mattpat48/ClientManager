@@ -1,6 +1,7 @@
 import 'package:clientmanager/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../src/providers/client.dart';
 import '../src/providers/client_provider.dart';
 import 'form_field_data.dart';
@@ -73,10 +74,23 @@ class _ClientsScreenState extends State<ClientsScreen> {
       },
       addItemToProvider: (provider, item) => provider.addClient(item),
       itemBuilder: (ctx, client) {
+        final hasPhoneNumber = client.phoneNumber != null && client.phoneNumber!.isNotEmpty;
         return ListTile(
           leading: const CircleAvatar(child: Icon(Icons.person)),
           title: Text(client.name),
           subtitle: Text(client.phoneNumber ?? l10n.noPhoneNumberMessage),
+          trailing: hasPhoneNumber
+              ? IconButton(
+                  icon: const Icon(Icons.phone),
+                  onPressed: () async {
+                    final Uri launchUri = Uri(
+                      scheme: 'tel',
+                      path: client.phoneNumber,
+                    );
+                    await launchUrl(launchUri);
+                  },
+                )
+              : null,
           onTap: () => Navigator.of(ctx).push(
             MaterialPageRoute(
               builder: (innerContext) => ClientScreen(client: client),

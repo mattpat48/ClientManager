@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'form_field_data.dart';
 import 'listable_screen.dart';
+import 'service_details_screen.dart';
 
 class ServicesScreen extends StatefulWidget {
   const ServicesScreen({super.key});
@@ -81,6 +82,11 @@ class _ServicesScreenState extends State<ServicesScreen> {
           leading: const CircleAvatar(child: Icon(Icons.miscellaneous_services)),
           title: Text(service.name),
           subtitle: Text('${service.price.toStringAsFixed(2)} €'),
+          onTap: () => Navigator.of(ctx).push(
+            MaterialPageRoute(
+              builder: (innerContext) => ServiceDetailsScreen(service: service),
+            ),
+          ),
           onLongPress: () => _showRemoveServiceDialog(service),
         );
       },

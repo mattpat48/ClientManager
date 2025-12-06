@@ -130,4 +130,40 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get removeEventConfirmation =>
       'Do you really want to remove this event?';
+
+  @override
+  String get last7days => 'Last 7 days';
+
+  @override
+  String get last30days => 'Last 30 days';
+
+  @override
+  String get totalStats => 'All Time';
+
+  @override
+  String get customerServed => 'Served customers';
+
+  @override
+  String get earnings => 'Earnings';
+
+  @override
+  String get clientUsage => 'Most frequent customers';
+
+  @override
+  String get unknown => 'Unknown';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get avgExpensePerAppointment => 'Average expense per appointment';
+
+  @override
+  String get usedServices => 'Utilized Services';
+
+  @override
+  String get totalIncomePerService => 'Total income per service';
+
+  @override
+  String get editClient => 'Edit customer';
 }
