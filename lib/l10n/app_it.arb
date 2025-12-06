@@ -2,12 +2,26 @@
     "helloWorld": "Ciao Mondo!",
 
     "calendarName": "Calendario",
-    "clientsName": "Clienti",
+    "customersName": "Clienti",
     "settingsName": "Impostazioni",
 
-    "noClientsMessage": "Nessun cliente presente. Aggiungine uno!",
+    "noCustomersMessage": "Nessun cliente presente. Aggiungine uno!",
     "noPhoneNumberMessage": "Nessun numero di telefono",
-    "newClientNamePlacheholder": "Nuovo Cliente",
+    "newCustomerNamePlacheholder": "Nuovo Cliente",
+
+    "customer": "Cliente",
+    "pleaseSelectCustomer": "Seleziona un cliente",
+
+    "service": "Servizio",
+    "pleaseSelectService": "Seleziona un servizio",
+
+    "date": "Data",
+    "pleaseSelectDate": "Seleziona una data",
+
+    "startTime": "Ora di inizio",
+    "endTime": "Ora di fine",
+    "pleaseSelectTime": "Seleziona un orario",
+    "endTimeAfterStartTimeError": "L'ora di fine deve essere dopo l'ora di inizio!",
 
     "name": "Nome",
     "surname": "Cognome",
@@ -20,7 +34,7 @@
     "pleaseInsertPhoneNumber": "Inserisci il numero di telefono",
     "pleaseInsertEmail": "Inserisci l'email",
     "pleaseInsertAddress": "Inserisci l'indirizzo",
-    "removeClientConfirmation": "Eliminare definitivamente questo cliente?",
+    "removeCustomerConfirmation": "Eliminare definitivamente questo cliente?",
 
     "appointments": "Appuntamenti",
     "noAppointmentsMessage": "Nessun appuntamento presente.",
@@ -31,5 +45,7 @@
     "price": "Prezzo",
     "time": "Tempo",
     "pleaseInsertPrice": "Inserisci un prezzo",
-    "removeServiceConfirmation": "Eliminare definitivamente questo servizio?"
+    "removeServiceConfirmation": "Eliminare definitivamente questo servizio?",
+
+    "newEventName": "Nuovo Appuntamento"
 }

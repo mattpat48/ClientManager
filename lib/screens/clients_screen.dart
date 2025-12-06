@@ -21,7 +21,7 @@ class _ClientsScreenState extends State<ClientsScreen> {
 			builder: (BuildContext context) {
 				return AlertDialog(
 					title: Text(client.name),
-					content: Text(AppLocalizations.of(context)!.removeClientConfirmation),
+					content: Text(AppLocalizations.of(context)!.removeCustomerConfirmation),
 					actions: [
 						Row(
 							mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,9 +50,9 @@ class _ClientsScreenState extends State<ClientsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
 		return ListableScreenWithForm<ClientProvider, Client>(
-      appBarTitle: AppLocalizations.of(context)!.clientsName,
-      dialogTitle: l10n.newClientNamePlacheholder,
-      noItemsMessage: AppLocalizations.of(context)!.noClientsMessage,
+      appBarTitle: AppLocalizations.of(context)!.customersName,
+      dialogTitle: l10n.newCustomerNamePlacheholder,
+      noItemsMessage: AppLocalizations.of(context)!.noCustomersMessage,
       getItems: (provider) => provider.clients,
       formFields: [
         FormFieldData(

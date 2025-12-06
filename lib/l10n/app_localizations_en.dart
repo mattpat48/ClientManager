@@ -15,19 +15,49 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calendarName => 'Calendar';
 
   @override
-  String get clientsName => 'Clients';
+  String get customersName => 'Customers';
 
   @override
   String get settingsName => 'Settings';
 
   @override
-  String get noClientsMessage => 'No clients found. Add a new one!';
+  String get noCustomersMessage => 'No customers found. Add a new one!';
 
   @override
   String get noPhoneNumberMessage => 'No phone number';
 
   @override
-  String get newClientNamePlacheholder => 'New Client';
+  String get newCustomerNamePlacheholder => 'New Customer';
+
+  @override
+  String get customer => 'Customer';
+
+  @override
+  String get pleaseSelectCustomer => 'Please select a customer';
+
+  @override
+  String get service => 'Service';
+
+  @override
+  String get pleaseSelectService => 'Please select a service';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get pleaseSelectDate => 'Please select a date';
+
+  @override
+  String get startTime => 'Start Time';
+
+  @override
+  String get endTime => 'End Time';
+
+  @override
+  String get pleaseSelectTime => 'Please Select Time';
+
+  @override
+  String get endTimeAfterStartTimeError => 'End time must be after start time!';
 
   @override
   String get name => 'Name';
@@ -60,8 +90,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseInsertAddress => 'Please insert an address';
 
   @override
-  String get removeClientConfirmation =>
-      'Do you really want to remove this client?';
+  String get removeCustomerConfirmation =>
+      'Do you really want to remove this customer?';
 
   @override
   String get appointments => 'Appointments';
@@ -90,4 +120,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get removeServiceConfirmation =>
       'Do you really want to remove this service?';
+
+  @override
+  String get newEventName => 'New Event';
 }

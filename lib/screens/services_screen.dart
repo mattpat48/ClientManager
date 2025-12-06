@@ -72,6 +72,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
         return Service(
           name: formResults[l10n.name]!,
           price: double.parse(formResults[l10n.price]!),
+          time: double.parse(formResults[l10n.time]!),
         );
       },
       addItemToProvider: (provider, item) => provider.addService(item),

@@ -21,4 +21,9 @@ class ClientProvider extends JsonStorageProvider<Client> {
     items.removeWhere((client) => client.id == id);
     saveItems();
   }
+
+  void updateClient(Client client) {
+    // Non è necessario fare nulla qui se l'oggetto client è già stato modificato in memoria
+    saveItems();
+  }
 }

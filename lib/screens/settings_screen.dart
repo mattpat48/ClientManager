@@ -19,8 +19,8 @@ class SettingsScreen extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.design_services),
                 title: Text(AppLocalizations.of(context)!.servicesName),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ServicesScreen()));
+                onTap: () => {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ServicesScreen()))
                 },
               ),
             ),

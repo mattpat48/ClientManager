@@ -1,14 +1,18 @@
+import 'package:clientmanager/src/providers/event.dart';
+
 import '../json_storage_provider.dart';
 
 class Client implements JsonSerializable {
 	final String id;
 	final String name;
 	final String? phoneNumber;
+  List<String> appointments;
 
 	Client({
 		required this.id,
 		required this.name,
 		this.phoneNumber,
+    this.appointments = const [],
 	});
 
 	factory Client.fromJson(Map<String, dynamic> json) {
@@ -16,6 +20,7 @@ class Client implements JsonSerializable {
 			id: json['id'],
 			name: json['name'],
 			phoneNumber: json['phoneNumber'],
+      appointments: List<String>.from(json['appointments'] ?? []),
 		);
 	}
 
@@ -25,6 +30,7 @@ class Client implements JsonSerializable {
 			'id': id,
 			'name': name,
 			'phoneNumber': phoneNumber,
+      'appointments': appointments,
 		};
 	}
 }

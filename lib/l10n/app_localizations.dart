@@ -110,11 +110,11 @@ abstract class AppLocalizations {
   /// **'Calendar'**
   String get calendarName;
 
-  /// No description provided for @clientsName.
+  /// No description provided for @customersName.
   ///
   /// In en, this message translates to:
-  /// **'Clients'**
-  String get clientsName;
+  /// **'Customers'**
+  String get customersName;
 
   /// No description provided for @settingsName.
   ///
@@ -122,11 +122,11 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settingsName;
 
-  /// No description provided for @noClientsMessage.
+  /// No description provided for @noCustomersMessage.
   ///
   /// In en, this message translates to:
-  /// **'No clients found. Add a new one!'**
-  String get noClientsMessage;
+  /// **'No customers found. Add a new one!'**
+  String get noCustomersMessage;
 
   /// No description provided for @noPhoneNumberMessage.
   ///
@@ -134,11 +134,71 @@ abstract class AppLocalizations {
   /// **'No phone number'**
   String get noPhoneNumberMessage;
 
-  /// No description provided for @newClientNamePlacheholder.
+  /// No description provided for @newCustomerNamePlacheholder.
   ///
   /// In en, this message translates to:
-  /// **'New Client'**
-  String get newClientNamePlacheholder;
+  /// **'New Customer'**
+  String get newCustomerNamePlacheholder;
+
+  /// No description provided for @customer.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get customer;
+
+  /// No description provided for @pleaseSelectCustomer.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a customer'**
+  String get pleaseSelectCustomer;
+
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get service;
+
+  /// No description provided for @pleaseSelectService.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a service'**
+  String get pleaseSelectService;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @pleaseSelectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a date'**
+  String get pleaseSelectDate;
+
+  /// No description provided for @startTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Time'**
+  String get startTime;
+
+  /// No description provided for @endTime.
+  ///
+  /// In en, this message translates to:
+  /// **'End Time'**
+  String get endTime;
+
+  /// No description provided for @pleaseSelectTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Select Time'**
+  String get pleaseSelectTime;
+
+  /// No description provided for @endTimeAfterStartTimeError.
+  ///
+  /// In en, this message translates to:
+  /// **'End time must be after start time!'**
+  String get endTimeAfterStartTimeError;
 
   /// No description provided for @name.
   ///
@@ -200,11 +260,11 @@ abstract class AppLocalizations {
   /// **'Please insert an address'**
   String get pleaseInsertAddress;
 
-  /// No description provided for @removeClientConfirmation.
+  /// No description provided for @removeCustomerConfirmation.
   ///
   /// In en, this message translates to:
-  /// **'Do you really want to remove this client?'**
-  String get removeClientConfirmation;
+  /// **'Do you really want to remove this customer?'**
+  String get removeCustomerConfirmation;
 
   /// No description provided for @appointments.
   ///
@@ -259,6 +319,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Do you really want to remove this service?'**
   String get removeServiceConfirmation;
+
+  /// No description provided for @newEventName.
+  ///
+  /// In en, this message translates to:
+  /// **'New Event'**
+  String get newEventName;
 }
 
 class _AppLocalizationsDelegate

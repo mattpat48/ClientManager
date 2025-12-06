@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
 			),
 			BottomNavigationBarItem(
 				icon: Icon(Icons.people),
-				label: AppLocalizations.of(context)!.clientsName,
+				label: AppLocalizations.of(context)!.customersName,
 			),
 			BottomNavigationBarItem(
 				icon: Icon(Icons.settings),

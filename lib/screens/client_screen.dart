@@ -20,7 +20,7 @@ class _ClientScreenState extends State<ClientScreen> {
 		// Usiamo 'watch' per ascoltare i cambiamenti nell'EventProvider.
 		final eventProvider = context.watch<EventProvider>();
 		final clientEvents = eventProvider.events
-				.where((event) => event.userId == widget.client.id)
+				.where((event) => event.customerId == widget.client.id)
 				.toList();
 		return Scaffold(
 			appBar: AppBar(

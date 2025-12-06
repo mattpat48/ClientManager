@@ -15,19 +15,50 @@ class AppLocalizationsIt extends AppLocalizations {
   String get calendarName => 'Calendario';
 
   @override
-  String get clientsName => 'Clienti';
+  String get customersName => 'Clienti';
 
   @override
   String get settingsName => 'Impostazioni';
 
   @override
-  String get noClientsMessage => 'Nessun cliente presente. Aggiungine uno!';
+  String get noCustomersMessage => 'Nessun cliente presente. Aggiungine uno!';
 
   @override
   String get noPhoneNumberMessage => 'Nessun numero di telefono';
 
   @override
-  String get newClientNamePlacheholder => 'Nuovo Cliente';
+  String get newCustomerNamePlacheholder => 'Nuovo Cliente';
+
+  @override
+  String get customer => 'Cliente';
+
+  @override
+  String get pleaseSelectCustomer => 'Seleziona un cliente';
+
+  @override
+  String get service => 'Servizio';
+
+  @override
+  String get pleaseSelectService => 'Seleziona un servizio';
+
+  @override
+  String get date => 'Data';
+
+  @override
+  String get pleaseSelectDate => 'Seleziona una data';
+
+  @override
+  String get startTime => 'Ora di inizio';
+
+  @override
+  String get endTime => 'Ora di fine';
+
+  @override
+  String get pleaseSelectTime => 'Seleziona un orario';
+
+  @override
+  String get endTimeAfterStartTimeError =>
+      'L\'ora di fine deve essere dopo l\'ora di inizio!';
 
   @override
   String get name => 'Nome';
@@ -60,7 +91,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get pleaseInsertAddress => 'Inserisci l\'indirizzo';
 
   @override
-  String get removeClientConfirmation =>
+  String get removeCustomerConfirmation =>
       'Eliminare definitivamente questo cliente?';
 
   @override
@@ -90,4 +121,7 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get removeServiceConfirmation =>
       'Eliminare definitivamente questo servizio?';
+
+  @override
+  String get newEventName => 'Nuovo Appuntamento';
 }

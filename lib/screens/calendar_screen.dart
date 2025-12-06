@@ -4,6 +4,7 @@ import '../src/providers/event.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'event_add_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -50,7 +51,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
             _focusedDay = focusedDay; // update `_focusedDay` here as well
           });
         },
-      )
+
+        
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventAddScreen(date: _selectedDay))),
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
