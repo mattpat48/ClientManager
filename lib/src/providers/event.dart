@@ -5,19 +5,21 @@ import '../json_storage_provider.dart';
 
 class Event implements JsonSerializable {
   final String id;
-  final String customerId;
-  final DateTime date;
-  final TimeOfDay startTime;
-  final TimeOfDay endTime;
-  final List<Service> services;
+  String customerId;
+  DateTime date;
+  TimeOfDay startTime;
+  TimeOfDay endTime;
+  List<Service> services;
+  String? note;
 
   Event({
     required this.id,
     required this.customerId,
     required this.date,
-    required this.services,
     required this.startTime,
     required this.endTime,
+    required this.services,
+    this.note,
   });
 
   factory Event.fromJson(Map<String, dynamic> json) {
@@ -29,9 +31,10 @@ class Event implements JsonSerializable {
       id: json['id'],
       customerId: json['customerId'],
       date: DateTime.parse(json['date']),
-      services: services,
       startTime: TimeOfDay.fromDateTime(DateTime.parse(json['startTime'])),
       endTime: TimeOfDay.fromDateTime(DateTime.parse(json['endTime'])),
+      services: services,
+      note: json['note'],
     );
   }
 
@@ -44,6 +47,7 @@ class Event implements JsonSerializable {
       'startTime': DateTime(date.year, date.month, date.day, startTime.hour, startTime.minute).toIso8601String(),
       'endTime': DateTime(date.year, date.month, date.day, endTime.hour, endTime.minute).toIso8601String(),
       'services': services.map((s) => s.toJson()).toList(),
+      'note': note,
     };
   }
 
@@ -52,7 +56,7 @@ class Event implements JsonSerializable {
 
   Event copyWith({List<Service>? services}) {
     return Event(
-        id: id, customerId: customerId, date: date, services: services ?? this.services, startTime: startTime, endTime: endTime);
+        id: id, customerId: customerId, date: date, services: services ?? this.services, startTime: startTime, endTime: endTime, note: note);
   }
 
 }

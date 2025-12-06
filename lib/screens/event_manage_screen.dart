@@ -10,27 +10,55 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../src/providers/event.dart';
 import '../src/providers/event_provider.dart';
 
-class EventAddScreen extends StatefulWidget {
+class EventManageScreen extends StatefulWidget {
   final DateTime? date;
-
-  const EventAddScreen({super.key, required this.date});
+  final Event? existingEvent;
+  
+  const EventManageScreen({super.key, this.date, this.existingEvent}) : assert(date != null || existingEvent != null);
 
   @override
-  State<EventAddScreen> createState() => _EventAddScreenState();
+  State<EventManageScreen> createState() => _EventManageScreenState();
 }
 
-class _EventAddScreenState extends State<EventAddScreen> {
+class _EventManageScreenState extends State<EventManageScreen> {
   final _formKey = GlobalKey<FormState>();
   Client? _selectedClient;
   List<Service> _selectedServices = [];  
   DateTime? _selectedDate;
   TimeOfDay? _startTime = TimeOfDay.now();
   TimeOfDay? _endTime;
+  late TextEditingController _noteController;
 
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.date;
+    if (widget.existingEvent != null) {
+      final event = widget.existingEvent!;
+      _selectedDate = event.date;
+      _startTime = event.startTime;
+      _endTime = event.endTime;
+      _selectedServices = List<Service>.from(event.services);
+      _noteController = TextEditingController(text: event.note);
+
+      // Recupera il cliente dopo che il widget è stato costruito
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final clientProvider = Provider.of<ClientProvider>(context, listen: false);
+        if (mounted) {
+          setState(() {
+            _selectedClient = clientProvider.clients.firstWhere((c) => c.id == event.customerId);
+          });
+        }
+      });
+    } else {
+      _selectedDate = widget.date;
+      _noteController = TextEditingController();
+    }
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
   }
 
   String _formatTime(TimeOfDay time) {
@@ -40,10 +68,18 @@ class _EventAddScreenState extends State<EventAddScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final clientProvider = context.watch<ClientProvider>();
+
+    String appBarTitle = l10n.newEventName;
+    if (widget.existingEvent != null && _selectedClient != null) {
+      appBarTitle =
+          '${_selectedClient!.name} - ${DateFormat.yMMMd().format(_selectedDate!)} - ${_formatTime(_startTime!)}';
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.newEventName),
+        title: Text(appBarTitle),
+        centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _saveEvent,
@@ -58,8 +94,7 @@ class _EventAddScreenState extends State<EventAddScreen> {
                 Card(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Consumer2<ClientProvider, ServiceProvider>(
-                        builder: (context, clientProvider, serviceProvider, child) {
+                    child: Consumer<ServiceProvider>(builder: (context, serviceProvider, child) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -109,6 +144,7 @@ class _EventAddScreenState extends State<EventAddScreen> {
                           const Divider(),
                           MultiSelectDialogField<Service>(
                             dialogHeight: MediaQuery.of(context).size.height * 0.4,
+                            initialValue: _selectedServices,
                             autovalidateMode: AutovalidateMode.onUserInteraction,
                             decoration:
                                 const BoxDecoration(border: Border(bottom: BorderSide.none)),
@@ -154,6 +190,17 @@ class _EventAddScreenState extends State<EventAddScreen> {
                                 : _formatTime(_endTime!)),
                             onTap: () => _pickTime(false),
                             enabled: _startTime != null,
+                          ),
+                          const Divider(),
+                          // inserisci una sezione per l'inserimento di note
+                          TextFormField(                            
+                            controller: _noteController,
+                            decoration: InputDecoration(
+                              labelText: "Note",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
                           ),
                         ],
                       );
@@ -213,9 +260,8 @@ class _EventAddScreenState extends State<EventAddScreen> {
         _startTime != null &&
         _endTime != null) {
       final eventProvider = context.read<EventProvider>();
-      final clientProvider = context.read<ClientProvider>();
+      final clientProvider = context.read<ClientProvider>(); // No need to watch, just read
 
-      // Ulteriore controllo di sicurezza sull'orario
       if (_endTime!.hour < _startTime!.hour ||
           (_endTime!.hour == _startTime!.hour &&
               _endTime!.minute <= _startTime!.minute)) {
@@ -224,19 +270,45 @@ class _EventAddScreenState extends State<EventAddScreen> {
         );
         return;
       }
+      
+      if (widget.existingEvent != null) {
+        // Modifica evento esistente
+        final oldEvent = widget.existingEvent!;
+        final updatedEvent = Event(
+          id: oldEvent.id,
+          date: _selectedDate!,
+          startTime: _startTime!,
+          endTime: _endTime!,
+          customerId: _selectedClient!.id,
+          services: _selectedServices,
+          note: _noteController.text,
+        );
 
-      final newEvent = Event(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        date: _selectedDate!,
-        startTime: _startTime!,
-        endTime: _endTime!,
-        customerId: _selectedClient!.id,
-        services: _selectedServices,
-      );
+        // Se il cliente è cambiato, aggiorna entrambi i clienti
+        if (oldEvent.customerId != _selectedClient!.id) {
+          Client oldClient = clientProvider.clients.firstWhere((c) => c.id == oldEvent.customerId);
+          oldClient.appointments.remove(oldEvent.id);
+          clientProvider.updateClient(oldClient);
 
-      eventProvider.addEvent(newEvent);
-      _selectedClient!.appointments.add(newEvent.id);
-      clientProvider.updateClient(_selectedClient!);
+          _selectedClient!.appointments.add(oldEvent.id);
+          clientProvider.updateClient(_selectedClient!);
+        }
+        eventProvider.updateEvent(updatedEvent);
+      } else {
+        // Aggiungi nuovo evento
+        final newEvent = Event(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          date: _selectedDate!,
+          startTime: _startTime!,
+          endTime: _endTime!,
+          customerId: _selectedClient!.id,
+          services: _selectedServices,
+          note: _noteController.text,
+        );
+        eventProvider.addEvent(newEvent);
+        _selectedClient!.appointments.add(newEvent.id);
+        clientProvider.updateClient(_selectedClient!);
+      }
 
       Navigator.of(context).pop();
     }

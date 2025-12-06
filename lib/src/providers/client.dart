@@ -4,8 +4,8 @@ import '../json_storage_provider.dart';
 
 class Client implements JsonSerializable {
 	final String id;
-	final String name;
-	final String? phoneNumber;
+	String name;
+	String? phoneNumber;
   List<String> appointments;
 
 	Client({

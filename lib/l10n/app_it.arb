@@ -37,6 +37,7 @@
     "removeCustomerConfirmation": "Eliminare definitivamente questo cliente?",
 
     "appointments": "Appuntamenti",
+    "appointment": "Appuntamento",
     "noAppointmentsMessage": "Nessun appuntamento presente.",
 
     "servicesName": "Servizi",
@@ -47,5 +48,7 @@
     "pleaseInsertPrice": "Inserisci un prezzo",
     "removeServiceConfirmation": "Eliminare definitivamente questo servizio?",
 
-    "newEventName": "Nuovo Appuntamento"
+    "newEventName": "Nuovo Appuntamento",
+    "removeEventConfirmation": "Eliminare definitivamente questo appuntamento?"
+
 }

@@ -17,6 +17,14 @@ class EventProvider extends JsonStorageProvider<Event> {
     saveItems();
   }
 
+  void updateEvent(Event event) {
+    final index = items.indexWhere((e) => e.id == event.id);
+    if (index != -1) {
+      items[index] = event;
+      saveItems();
+    }
+  }
+
   void removeEvent(String id) {
     items.removeWhere((event) => event.id == id);
     saveItems();

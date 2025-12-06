@@ -97,6 +97,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appointments => 'Appointments';
 
   @override
+  String get appointment => 'Appointment';
+
+  @override
   String get noAppointmentsMessage => 'No appointments found. Add a new one!';
 
   @override
@@ -123,4 +126,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newEventName => 'New Event';
+
+  @override
+  String get removeEventConfirmation =>
+      'Do you really want to remove this event?';
 }

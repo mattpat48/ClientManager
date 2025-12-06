@@ -98,6 +98,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get appointments => 'Appuntamenti';
 
   @override
+  String get appointment => 'Appuntamento';
+
+  @override
   String get noAppointmentsMessage => 'Nessun appuntamento presente.';
 
   @override
@@ -124,4 +127,8 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get newEventName => 'Nuovo Appuntamento';
+
+  @override
+  String get removeEventConfirmation =>
+      'Eliminare definitivamente questo appuntamento?';
 }

@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Appointments'**
   String get appointments;
 
+  /// No description provided for @appointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment'**
+  String get appointment;
+
   /// No description provided for @noAppointmentsMessage.
   ///
   /// In en, this message translates to:
@@ -325,6 +331,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New Event'**
   String get newEventName;
+
+  /// No description provided for @removeEventConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you really want to remove this event?'**
+  String get removeEventConfirmation;
 }
 
 class _AppLocalizationsDelegate

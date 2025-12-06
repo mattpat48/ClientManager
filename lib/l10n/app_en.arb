@@ -37,6 +37,7 @@
     "removeCustomerConfirmation": "Do you really want to remove this customer?",
 
     "appointments": "Appointments",
+    "appointment": "Appointment",
     "noAppointmentsMessage": "No appointments found. Add a new one!",
 
     "servicesName": "Services",
@@ -47,5 +48,6 @@
     "pleaseInsertPrice": "Please insert a price",
     "removeServiceConfirmation": "Do you really want to remove this service?",
 
-    "newEventName": "New Event"
+    "newEventName": "New Event",
+    "removeEventConfirmation": "Do you really want to remove this event?"
 }
