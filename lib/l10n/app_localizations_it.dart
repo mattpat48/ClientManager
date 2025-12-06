@@ -167,4 +167,38 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get editClient => 'Modifica cliente';
+
+  @override
+  String get exportData => 'Esporta Dati';
+
+  @override
+  String get importData => 'Importa Dati';
+
+  @override
+  String get warning => 'Attenzione!';
+
+  @override
+  String get overWriting =>
+      'Importando questo file sovrascriverai tutti i dati salvati su questo dispositivo. Vuoi continuare?';
+
+  @override
+  String get cancel => 'Annulla';
+
+  @override
+  String get confirm => 'OK';
+
+  @override
+  String get importSuccess => 'Dati importati con successo!';
+
+  @override
+  String get importError => 'Errore durante l\'importazione dei dati.';
+
+  @override
+  String get invalidFileFormat => 'Formato file non valido.';
+
+  @override
+  String get exportSuccess => 'Dati esportati con successo!';
+
+  @override
+  String get exportError => 'Errore durante l\'esportazione dei dati.';
 }

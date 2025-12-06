@@ -409,6 +409,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Edit customer'**
   String get editClient;
+
+  /// No description provided for @exportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Data'**
+  String get exportData;
+
+  /// No description provided for @importData.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Data'**
+  String get importData;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning!'**
+  String get warning;
+
+  /// No description provided for @overWriting.
+  ///
+  /// In en, this message translates to:
+  /// **'By importing this file, you will over-write all data saved on this app. Would you like to continue?'**
+  String get overWriting;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get confirm;
+
+  /// No description provided for @importSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Data imported successfully!'**
+  String get importSuccess;
+
+  /// No description provided for @importError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during data import.'**
+  String get importError;
+
+  /// No description provided for @invalidFileFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid file format.'**
+  String get invalidFileFormat;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Data exported successfully!'**
+  String get exportSuccess;
+
+  /// No description provided for @exportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during data export.'**
+  String get exportError;
 }
 
 class _AppLocalizationsDelegate

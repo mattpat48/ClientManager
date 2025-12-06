@@ -21,4 +21,10 @@ class ServiceProvider extends JsonStorageProvider<Service> {
     items.removeWhere((service) => service.name == name);
     saveItems();
   }
+
+  void clearAndLoad(List<dynamic> data) {
+    items.clear();
+    items.addAll(data.map((json) => fromJson(json)));
+    saveItems();
+  }
 }

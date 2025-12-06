@@ -65,6 +65,21 @@
     "avgExpensePerAppointment": "Spesa media per appuntamento",
     "usedServices": "Servizi Utilizzati",
     "totalIncomePerService": "Guadagno totale per servizio",
-    "editClient": "Modifica cliente"
+    "editClient": "Modifica cliente",
+
+    "exportData": "Esporta Dati",
+    "importData": "Importa Dati",
+
+    "warning": "Attenzione!",
+    "overWriting": "Importando questo file sovrascriverai tutti i dati salvati su questo dispositivo. Vuoi continuare?",
+
+    "cancel": "Annulla",
+    "confirm": "OK",
+
+    "importSuccess": "Dati importati con successo!",
+    "importError": "Errore durante l'importazione dei dati.",
+    "invalidFileFormat": "Formato file non valido.",
+    "exportSuccess": "Dati esportati con successo!",
+    "exportError": "Errore durante l'esportazione dei dati."
 
 }

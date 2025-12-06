@@ -29,4 +29,10 @@ class EventProvider extends JsonStorageProvider<Event> {
     items.removeWhere((event) => event.id == id);
     saveItems();
   }
+
+  void clearAndLoad(List<dynamic> data) {
+    items.clear();
+    items.addAll(data.map((json) => fromJson(json)));
+    saveItems();
+  }
 }

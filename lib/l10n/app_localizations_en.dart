@@ -166,4 +166,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editClient => 'Edit customer';
+
+  @override
+  String get exportData => 'Export Data';
+
+  @override
+  String get importData => 'Import Data';
+
+  @override
+  String get warning => 'Warning!';
+
+  @override
+  String get overWriting =>
+      'By importing this file, you will over-write all data saved on this app. Would you like to continue?';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get confirm => 'OK';
+
+  @override
+  String get importSuccess => 'Data imported successfully!';
+
+  @override
+  String get importError => 'Error during data import.';
+
+  @override
+  String get invalidFileFormat => 'Invalid file format.';
+
+  @override
+  String get exportSuccess => 'Data exported successfully!';
+
+  @override
+  String get exportError => 'Error during data export.';
 }

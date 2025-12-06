@@ -65,5 +65,22 @@
     "avgExpensePerAppointment": "Average expense per appointment",
     "usedServices": "Utilized Services",
     "totalIncomePerService": "Total income per service",
-    "editClient": "Edit customer"
+    "editClient": "Edit customer",
+
+    "exportData": "Export Data",
+    "importData": "Import Data",
+
+    "warning": "Warning!",
+    "overWriting": "By importing this file, you will over-write all data saved on this app. Would you like to continue?",
+
+    "cancel": "Cancel",
+    "confirm": "OK",
+
+    "importSuccess": "Data imported successfully!",
+    "importError": "Error during data import.",
+    "invalidFileFormat": "Invalid file format.",
+    "exportSuccess": "Data exported successfully!",
+    "exportError": "Error during data export."
+
+
 }

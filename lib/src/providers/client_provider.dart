@@ -26,4 +26,10 @@ class ClientProvider extends JsonStorageProvider<Client> {
     // Non è necessario fare nulla qui se l'oggetto client è già stato modificato in memoria
     saveItems();
   }
+
+  void clearAndLoad(List<dynamic> data) {
+    items.clear();
+    items.addAll(data.map((json) => fromJson(json)));
+    saveItems();
+  }
 }
