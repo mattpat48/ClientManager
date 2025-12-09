@@ -168,6 +168,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editClient => 'Edit customer';
 
   @override
+  String get appointmentsHistory => 'Appointment history';
+
+  @override
   String get exportData => 'Export Data';
 
   @override
@@ -200,4 +203,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportError => 'Error during data export.';
+
+  @override
+  String get editService => 'Edit service';
+
+  @override
+  String get details => 'Details';
 }

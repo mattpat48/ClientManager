@@ -59,22 +59,28 @@ class _ClientScreenState extends State<ClientScreen> {
 		final startOfToday = DateTime(today.year, today.month, today.day);
 		final upcomingEvents = allClientEvents
 				.where((event) => !event.date.isBefore(startOfToday))
-				.toList();
+				.toList()..sort((a, b) => a.date.compareTo(b.date));
+
+		final pastEvents = allClientEvents
+				.where((event) => event.date.isBefore(startOfToday))
+				.toList()..sort((a, b) => b.date.compareTo(a.date));
 
 		// 1. Calcolo spesa media per appuntamento
 		final double totalSpending = allClientEvents.fold(
 			0.0,
-			(sum, event) => sum + event.services.fold(0.0, (s, service) => s + service.price));
+			(sum, event) => sum + event.services.fold(0.0, (s, service) => s + service.getPriceForDate(event.date)));
 		final double averageSpending = allClientEvents.isNotEmpty ? totalSpending / allClientEvents.length : 0.0;
 
 		// 2. Dati per grafico e spesa per servizio
 		final Map<Service, int> serviceUsage = {};
 		final Map<Service, double> serviceSpending = {};
 
+
 		for (var event in allClientEvents) {
 			for (var service in event.services) {
+				final priceForDate = service.getPriceForDate(event.date);
 				serviceUsage.update(service, (value) => value + 1, ifAbsent: () => 1);
-				serviceSpending.update(service, (value) => value + service.price, ifAbsent: () => service.price);
+				serviceSpending.update(service, (value) => value + priceForDate, ifAbsent: () => priceForDate);
 			}
 		}
 
@@ -278,6 +284,43 @@ class _ClientScreenState extends State<ClientScreen> {
 								),
 							),
 						),
+
+					// Card Cronologia Appuntamenti
+					const SizedBox(height: 16),
+					Card(
+						child: Padding(
+							padding: const EdgeInsets.all(16.0),
+							child: Column(
+								crossAxisAlignment: CrossAxisAlignment.start,
+								children: [
+									Text(l10n.appointmentsHistory, style: Theme.of(context).textTheme.headlineSmall),
+									const SizedBox(height: 10),
+									pastEvents.isEmpty
+										? Center(child: Padding(
+											padding: const EdgeInsets.symmetric(vertical: 16.0),
+											child: Text(l10n.noAppointmentsMessage),
+										))
+										: ListView.separated(
+											shrinkWrap: true,
+											physics: const NeverScrollableScrollPhysics(),
+											itemCount: pastEvents.length,
+											separatorBuilder: (context, index) => const Divider(),
+											itemBuilder: (context, index) {
+												final event = pastEvents[index];
+												final eventCost = event.services.fold(0.0, (sum, service) => sum + service.getPriceForDate(event.date));
+												return ListTile(
+													title: Text(DateFormat.yMMMd().format(event.date)),
+													subtitle: Text(event.services.map((s) => s.name).join(', ')),
+													trailing: Text('€${eventCost.toStringAsFixed(2)}'),
+													onTap: () => Navigator.of(context).push(MaterialPageRoute(
+														builder: (context) => EventManageScreen(existingEvent: event))),
+												);
+											},
+										),
+								],
+							),
+						),
+					),
 				],
 			),
 		);

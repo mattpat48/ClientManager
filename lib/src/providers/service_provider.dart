@@ -2,7 +2,7 @@ import 'service.dart';
 import '../json_storage_provider.dart';
 
 class ServiceProvider extends JsonStorageProvider<Service> {
-  static const String _servicesKey = 'services_data';
+  static const String _servicesKey = 'services_data'; 
 
   ServiceProvider()
       : super(
@@ -15,6 +15,14 @@ class ServiceProvider extends JsonStorageProvider<Service> {
   void addService(Service service) {
     items.add(service);
     saveItems();
+  }
+
+  void updateService(Service updatedService) {
+    final index = items.indexWhere((service) => service.id == updatedService.id);
+    if (index != -1) {
+      items[index] = updatedService;
+      saveItems();
+    }
   }
 
   void removeService(String name) {

@@ -19,26 +19,22 @@ class _ServicesScreenState extends State<ServicesScreen> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        final l10n = AppLocalizations.of(context)!;
         return AlertDialog(
           title: Text(service.name),
           content: Text(AppLocalizations.of(context)!.removeServiceConfirmation),
           actions: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                TextButton(
-                  child: const Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                TextButton(
-                  child: const Icon(Icons.check),
-                  onPressed: () {
-                    context.read<ServiceProvider>().removeService(service.name);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            )
+            TextButton(
+              child: Text(l10n.cancel),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text(l10n.confirm),
+              onPressed: () {
+                context.read<ServiceProvider>().removeService(service.name);
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },
@@ -71,8 +67,9 @@ class _ServicesScreenState extends State<ServicesScreen> {
       ],
       createItemFromForm: (formResults) {
         return Service(
+          id: DateTime.now().toIso8601String(),
           name: formResults[l10n.name]!,
-          price: double.parse(formResults[l10n.price]!),
+          priceHistory: [PricePoint(price: double.parse(formResults[l10n.price]!), startDate: DateTime.now())],
           time: double.parse(formResults[l10n.time]!),
         );
       },
@@ -81,7 +78,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
         return ListTile(
           leading: const CircleAvatar(child: Icon(Icons.miscellaneous_services)),
           title: Text(service.name),
-          subtitle: Text('${service.price.toStringAsFixed(2)} €'),
+          subtitle: Text('${service.priceHistory.last.price.toStringAsFixed(2)} €'),
           onTap: () => Navigator.of(ctx).push(
             MaterialPageRoute(
               builder: (innerContext) => ServiceDetailsScreen(service: service),

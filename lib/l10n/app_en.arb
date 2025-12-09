@@ -66,6 +66,7 @@
     "usedServices": "Utilized Services",
     "totalIncomePerService": "Total income per service",
     "editClient": "Edit customer",
+    "appointmentsHistory": "Appointment history",
 
     "exportData": "Export Data",
     "importData": "Import Data",
@@ -80,7 +81,10 @@
     "importError": "Error during data import.",
     "invalidFileFormat": "Invalid file format.",
     "exportSuccess": "Data exported successfully!",
-    "exportError": "Error during data export."
+    "exportError": "Error during data export.",
+
+    "editService": "Edit service",
+    "details": "Details"
 
 
 }

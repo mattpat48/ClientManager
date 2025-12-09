@@ -20,26 +20,22 @@ class _ClientsScreenState extends State<ClientsScreen> {
 		return showDialog<void>(
 			context: context,
 			builder: (BuildContext context) {
+        final l10n = AppLocalizations.of(context)!;
 				return AlertDialog(
 					title: Text(client.name),
 					content: Text(AppLocalizations.of(context)!.removeCustomerConfirmation),
 					actions: [
-						Row(
-							mainAxisAlignment: MainAxisAlignment.spaceBetween,
-							children: <Widget>[
-								TextButton(
-									child: const Icon(Icons.close),
-									onPressed: () => Navigator.of(context).pop(),
-								),
-								TextButton(
-									child: const Icon(Icons.check),
-									onPressed: () {
-										context.read<ClientProvider>().removeClient(client.id);
-										Navigator.of(context).pop();
-									},
-								),
-							],
-						)
+            TextButton(
+              child: Text(l10n.cancel),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text(l10n.confirm),
+              onPressed: () {
+                context.read<ClientProvider>().removeClient(client.id);
+                Navigator.of(context).pop();
+              },
+            ),
 					],
 				);
 			},

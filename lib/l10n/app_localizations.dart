@@ -410,6 +410,12 @@ abstract class AppLocalizations {
   /// **'Edit customer'**
   String get editClient;
 
+  /// No description provided for @appointmentsHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment history'**
+  String get appointmentsHistory;
+
   /// No description provided for @exportData.
   ///
   /// In en, this message translates to:
@@ -475,6 +481,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error during data export.'**
   String get exportError;
+
+  /// No description provided for @editService.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit service'**
+  String get editService;
+
+  /// No description provided for @details.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get details;
 }
 
 class _AppLocalizationsDelegate

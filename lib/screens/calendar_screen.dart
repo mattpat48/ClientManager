@@ -24,15 +24,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        final clientProvider = context.read<ClientProvider>();
         return AlertDialog(
-          title: Text(l10n.removeEventConfirmation),
+          title: Text('${clientProvider.clients.where((client) => client.id == event.customerId).first.name}, ${event.startTime.format(context)} - ${event.endTime.format(context)}'),
+          content: Text(l10n.removeEventConfirmation),
           actions: [
             TextButton(
-              child: const Icon(Icons.close),
+              child: Text(l10n.cancel),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: const Icon(Icons.check),
+              child: Text(l10n.confirm),
               onPressed: () {
                 final eventProvider = context.read<EventProvider>();
                 final clientProvider = context.read<ClientProvider>();
@@ -75,30 +77,57 @@ class _CalendarScreenState extends State<CalendarScreen> {
       Column(
         children: [
           TableCalendar<Event>(
-          focusedDay: _focusedDay,
-          firstDay: DateTime.utc(2025, 1, 1),
-          lastDay: DateTime.utc(2050, 12, 31),
+            focusedDay: _focusedDay,
+            firstDay: DateTime.utc(2025, 1, 1),
+            lastDay: DateTime.utc(2050, 12, 31),
+            headerStyle: const HeaderStyle(
+              // Nasconde il pulsante per cambiare il formato (es. "2 weeks")
+              formatButtonVisible: false,
+              titleCentered: true,
+            ),
 
-          eventLoader: (day) {
-            return eventProvider.events.where((event) {
-              return isSameDay(event.date, day);
-            }).toList();
-          },
+            eventLoader: (day) {
+              return eventProvider.events.where((event) {
+                return isSameDay(event.date, day);
+              }).toList();
+            },
 
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          
-          onPageChanged: (focusedDay) {
-            _focusedDay = focusedDay;
-          },
-
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            
+            onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
-            });
-          },
+            },
+
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            holidayPredicate: (day) {
+              const holidays = {
+                '1-1',   // Capodanno
+                '1-6',   // Epifania
+                '4-25',  // Festa della Liberazione
+                '5-1',   // Festa del Lavoro
+                '6-2',   // Festa della Repubblica
+                '8-15',  // Ferragosto (Assunzione)
+                '11-1',  // Ognissanti (Tutti i Santi)
+                '12-8',  // Immacolata Concezione
+                '12-25', // Natale
+                '12-26', // Santo Stefano
+              };
+
+              // Considera festivo se è domenica
+              if (day.weekday == DateTime.sunday) return true;
+
+              // Considera festivo se è una delle date fisse
+              return holidays.contains('${day.month}-${day.day}');
+            }
           ),
           const Divider(),
           Expanded(
@@ -111,7 +140,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   child: ListTile(
                     isThreeLine: hasNote,
                     title: Text(
-                      '${clientProvider.clients.where((client) => client.id == event.customerId).first.name} - ${event.startTime.format(context)} - ${event.endTime.format(context)}'
+                      '${clientProvider.clients.where((client) => client.id == event.customerId).first.name}, ${event.startTime.format(context)} - ${event.endTime.format(context)}'
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
