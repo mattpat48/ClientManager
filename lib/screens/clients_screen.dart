@@ -71,28 +71,36 @@ class _ClientsScreenState extends State<ClientsScreen> {
       addItemToProvider: (provider, item) => provider.addClient(item),
       itemBuilder: (ctx, client) {
         final hasPhoneNumber = client.phoneNumber != null && client.phoneNumber!.isNotEmpty;
-        return ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.person)),
-          title: Text(client.name),
-          subtitle: Text(client.phoneNumber ?? l10n.noPhoneNumberMessage),
-          trailing: hasPhoneNumber
-              ? IconButton(
-                  icon: const Icon(Icons.phone),
-                  onPressed: () async {
-                    final Uri launchUri = Uri(
-                      scheme: 'tel',
-                      path: client.phoneNumber,
-                    );
-                    await launchUrl(launchUri);
-                  },
-                )
-              : null,
-          onTap: () => Navigator.of(ctx).push(
-            MaterialPageRoute(
-              builder: (innerContext) => ClientScreen(client: client),
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          elevation: 2.0,
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(ctx).primaryColorLight,
+              child: const Icon(Icons.person),
             ),
+            title: Text(client.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(
+              client.phoneNumber ?? l10n.noPhoneNumberMessage,
+              style: hasPhoneNumber ? null : TextStyle(color: Colors.grey[600]),
+            ),
+            trailing: hasPhoneNumber
+                ? IconButton(
+                    icon: Icon(Icons.phone, color: Theme.of(ctx).primaryColor),
+                    onPressed: () async {
+                      final Uri launchUri = Uri(
+                        scheme: 'tel',
+                        path: client.phoneNumber,
+                      );
+                      if (await canLaunchUrl(launchUri)) {
+                        await launchUrl(launchUri);
+                      }
+                    },
+                  )
+                : null,
+            onTap: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (innerContext) => ClientScreen(client: client))),
+            onLongPress: () => _showRemoveClientDialog(client),
           ),
-          onLongPress: () => _showRemoveClientDialog(client),
         );
       },
     );

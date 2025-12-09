@@ -84,7 +84,9 @@
     "exportError": "Error during data export.",
 
     "editService": "Edit service",
-    "details": "Details"
+    "details": "Details",
+    "totalIncomePerClient": "Total income per customer",
 
+    "noteLabel": "Notes"
 
 }

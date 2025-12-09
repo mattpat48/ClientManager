@@ -493,6 +493,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Details'**
   String get details;
+
+  /// No description provided for @totalIncomePerClient.
+  ///
+  /// In en, this message translates to:
+  /// **'Total income per customer'**
+  String get totalIncomePerClient;
+
+  /// No description provided for @noteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get noteLabel;
 }
 
 class _AppLocalizationsDelegate

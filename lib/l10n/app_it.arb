@@ -84,7 +84,9 @@
     "exportError": "Errore durante l'esportazione dei dati.",
 
     "editService": "Modifica servizio",
-    "details": "Dettagli"
+    "details": "Dettagli",
+    "totalIncomePerClient": "Guadagno totale per cliente",
 
+    "noteLabel": "Note"
 
 }

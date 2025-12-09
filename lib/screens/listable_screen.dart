@@ -30,7 +30,11 @@ class ListableScreenWithForm<P extends ChangeNotifier, T> extends StatelessWidge
     final items = getItems(provider);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(appBarTitle),
+        centerTitle: true,
+        titleTextStyle:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
       ),
       body: items.isEmpty
           ? Center(child: Text(noItemsMessage))

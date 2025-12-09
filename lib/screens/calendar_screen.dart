@@ -26,7 +26,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
       builder: (BuildContext context) {
         final clientProvider = context.read<ClientProvider>();
         return AlertDialog(
-          title: Text('${clientProvider.clients.where((client) => client.id == event.customerId).first.name}, ${event.startTime.format(context)} - ${event.endTime.format(context)}'),
+          title: Text(clientProvider.clients
+                  .firstWhere((client) => client.id == event.customerId,
+                      orElse: () => Client(id: '', name: l10n.unknown))
+                  .name),
           content: Text(l10n.removeEventConfirmation),
           actions: [
             TextButton(
@@ -39,7 +42,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 final eventProvider = context.read<EventProvider>();
                 final clientProvider = context.read<ClientProvider>();
 
-                // Rimuovi l'appuntamento dal cliente
                 Client client = clientProvider.clients.firstWhere((c) => c.id == event.customerId);
                 client.appointments.remove(event.id);
                 clientProvider.updateClient(client);
@@ -59,9 +61,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     final eventProvider = context.watch<EventProvider>();
     final clientProvider = context.watch<ClientProvider>();
+    final l10n = AppLocalizations.of(context)!;
 
     List<Event>? selectedDayEvents = eventProvider.events.where((event) => isSameDay(event.date, _selectedDay)).toList();
-
 
     selectedDayEvents.sort((a, b) {
       final aTime = a.startTime.hour * 60 + a.startTime.minute;
@@ -71,19 +73,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.calendarName),
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(l10n.calendarName),
+        centerTitle: true,
+        titleTextStyle:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
       ),
-      body: Padding(padding: EdgeInsets.all(10.0), child:
-      Column(
+      body: Column(
         children: [
           TableCalendar<Event>(
             focusedDay: _focusedDay,
             firstDay: DateTime.utc(2025, 1, 1),
             lastDay: DateTime.utc(2050, 12, 31),
-            headerStyle: const HeaderStyle(
-              // Nasconde il pulsante per cambiare il formato (es. "2 weeks")
+            locale: Localizations.localeOf(context).toString(),
+            headerStyle: HeaderStyle(
               formatButtonVisible: false,
               titleCentered: true,
+              titleTextStyle: Theme.of(context).textTheme.titleLarge!,
+            ),
+            calendarStyle: CalendarStyle(
+              outsideDaysVisible: false,
+              selectedDecoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                shape: BoxShape.circle,
+              ),
+              todayDecoration: BoxDecoration(
+                color: Theme.of(context).primaryColor.withOpacity(0.5),
+                shape: BoxShape.circle,
+              ),
+              holidayTextStyle: TextStyle(color: Theme.of(context).colorScheme.error),
             ),
 
             eventLoader: (day) {
@@ -129,45 +147,69 @@ class _CalendarScreenState extends State<CalendarScreen> {
               return holidays.contains('${day.month}-${day.day}');
             }
           ),
-          const Divider(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Divider(),
+          ),
           Expanded(
-            child: ListView.builder(
-              itemCount: selectedDayEvents.length,
-              itemBuilder: (context, index) {
-                final event = selectedDayEvents[index];
-                final hasNote = event.note != null && event.note!.isNotEmpty;
-                return Card(
-                  child: ListTile(
-                    isThreeLine: hasNote,
-                    title: Text(
-                      '${clientProvider.clients.where((client) => client.id == event.customerId).first.name}, ${event.startTime.format(context)} - ${event.endTime.format(context)}'
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            child: selectedDayEvents.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(event.services.map((service) => service.name).join(', ')),
-                        if (hasNote)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(
-                              'Note: ${event.note!}',
-                              style: TextStyle(fontStyle: FontStyle.italic, color: Theme.of(context).textTheme.bodySmall?.color),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                        Icon(Icons.event_busy, size: 50, color: Colors.grey[400]),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.noAppointmentsMessage,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
+                        ),
                       ],
                     ),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => EventManageScreen(existingEvent: event))),
-                    onLongPress: () => _showRemoveEventDialog(event),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(8.0),
+                    itemCount: selectedDayEvents.length,
+                    itemBuilder: (context, index) {
+                      final event = selectedDayEvents[index];
+                      final client = clientProvider.clients.firstWhere(
+                        (c) => c.id == event.customerId,
+                        orElse: () => Client(id: '', name: l10n.unknown),
+                      );
+                      final hasNote = event.note != null && event.note!.isNotEmpty;
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                        elevation: 2.0,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: const Icon(Icons.person),
+                            backgroundColor: Theme.of(context).primaryColorLight,
+                          ),
+                          title: Text(
+                            client.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(event.services.map((service) => service.name).join(', ')),
+                              if (hasNote)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 4.0),
+                                  child: Text('Nota: ${event.note!}', style: Theme.of(context).textTheme.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
+                                ),
+                            ],
+                          ),
+                          trailing: Text('${event.startTime.format(context)}\n${event.endTime.format(context)}', textAlign: TextAlign.right),
+                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EventManageScreen(existingEvent: event))),
+                          onLongPress: () => _showRemoveEventDialog(event),
+                          isThreeLine: hasNote,
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
           ),
         ],
-        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {

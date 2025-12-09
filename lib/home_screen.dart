@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   	int _selectedIndex = 0;
+	late PageController _pageController;
 
 	// Lista dei widget delle schermate che verranno mostrati.
 	static const List<Widget> _screenOptions = <Widget>[
@@ -22,16 +23,38 @@ class _HomeScreenState extends State<HomeScreen> {
 	];
 
 	void _onItemTapped(int index) {
-		setState(() {
-		_selectedIndex = index;
-		});
+		_pageController.animateToPage(
+			index,
+			duration: const Duration(milliseconds: 300),
+			curve: Curves.easeInOut,
+		);
+	}
+
+	@override
+	void initState() {
+		super.initState();
+		_pageController = PageController();
+	}
+
+	@override
+	void dispose() {
+		_pageController.dispose();
+		super.dispose();
 	}
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
-		body: _screenOptions.elementAt(_selectedIndex),
-		bottomNavigationBar: BottomNavigationBar(
+			body: PageView(
+				controller: _pageController,
+				onPageChanged: (index) {
+					setState(() {
+						_selectedIndex = index;
+					});
+				},
+				children: _screenOptions,
+			),
+			bottomNavigationBar: BottomNavigationBar(
 			items: <BottomNavigationBarItem>[
 			BottomNavigationBarItem(
 				icon: Icon(Icons.calendar_today),

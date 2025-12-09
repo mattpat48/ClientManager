@@ -129,64 +129,59 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(l10n.settingsName),
+        centerTitle: true,
+        titleTextStyle:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          children: [
-            Card(
-              child: Padding(padding: const EdgeInsets.symmetric(vertical:8.0), child: ListTile(
-                leading: const Icon(Icons.design_services),
-                title: Text(l10n.servicesName),
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ServicesScreen())),
-              )),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          Card(
+            elevation: 2,
+            child: ListTile(
+              leading: Icon(Icons.design_services, color: Theme.of(context).primaryColor),
+              title: Text(l10n.servicesName),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ServicesScreen())),
             ),
-            Card(
-              child: Padding(padding: const EdgeInsets.symmetric(vertical:8.0), child: ListTile(
-                leading: const Icon(Icons.upload_file),
-                title: Text(l10n.exportData),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                      ),
-                      child: IconButton(
+          ),
+          const SizedBox(height: 16),
+          Card(
+            elevation: 2,
+            clipBehavior: Clip.antiAlias,
+            child: Column(
+              children: [
+                ListTile(
+                  leading: Icon(Icons.upload_file, color: Theme.of(context).primaryColor),
+                  title: Text(l10n.exportData),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
                         icon: const Icon(Icons.share),
                         onPressed: _shareData,
-                        color: Theme.of(context).colorScheme.primary,
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1.5),
-                      ),
-                      child: IconButton(
-                        icon: const Icon(Icons.save),
+                      IconButton(
+                        icon: const Icon(Icons.save_alt),
                         onPressed: _saveData,
-                        color: Theme.of(context).colorScheme.primary,
                       ),
-                    )
-                  ],
+                    ],
+                  ),
                 ),
-              )),
+                const Divider(height: 1, indent: 16, endIndent: 16),
+                ListTile(
+                  leading: Icon(Icons.download, color: Theme.of(context).primaryColor),
+                  title: Text(l10n.importData),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: _importData,
+                ),
+              ],
             ),
-            Card(
-              child: Padding(padding: const EdgeInsets.symmetric(vertical:8.0), child:ListTile(
-                leading: const Icon(Icons.download),
-                title: Text(l10n.importData),
-                onTap: _importData,
-              )),
-            ),
-          ]
-        ),
-      )
+          ),
+        ],
+      ),
     );
   }
 }

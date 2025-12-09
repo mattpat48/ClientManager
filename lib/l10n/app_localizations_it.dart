@@ -210,4 +210,10 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get details => 'Dettagli';
+
+  @override
+  String get totalIncomePerClient => 'Guadagno totale per cliente';
+
+  @override
+  String get noteLabel => 'Note';
 }

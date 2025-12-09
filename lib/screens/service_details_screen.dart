@@ -112,197 +112,132 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
     final sortedClients = clientUsage.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
+    // Calcolo guadagno per cliente
+    final Map<String, double> clientEarnings = {};
+    for (var event in relevantEvents) {
+      final priceForDate = currentService.getPriceForDate(event.date);
+      clientEarnings.update(event.customerId, (value) => value + priceForDate, ifAbsent: () => priceForDate);
+    }
+
+    final sortedClientEarnings = clientEarnings.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(_isEditing ? l10n.editService : currentService.name),
-        actions: [
-          if (_isEditing)
+        centerTitle: true,
+        titleTextStyle:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
+          actions: [
+            if (_isEditing)
+              IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: _toggleEdit,
+              ),
             IconButton(
-              icon: const Icon(Icons.cancel),
-              onPressed: _toggleEdit,
-            ),
-          IconButton(
-            icon: Icon(_isEditing ? Icons.save : Icons.edit),
-            onPressed: () {
-              if (_isEditing) {
-                // Salva le modifiche
-                final updatedService = currentService.copyWith(
-                  name: _nameController.text,
-                  time: int.parse(_timeController.text),
-                );
+              icon: Icon(_isEditing ? Icons.save : Icons.edit),
+              onPressed: () {
+                if (_isEditing) {
+                  // Salva le modifiche
+                  final updatedService = currentService.copyWith(
+                    name: _nameController.text,
+                    time: int.parse(_timeController.text),
+                  );
 
-                final newPrice = double.parse(_priceController.text);
-                if (newPrice != updatedService.currentPrice) {
-                  updatedService.addPrice(newPrice, DateTime.now());
+                  final newPrice = double.parse(_priceController.text);
+                  if (newPrice != updatedService.currentPrice) {
+                    updatedService.addPrice(newPrice, DateTime.now());
+                  }
+
+                  serviceProvider.updateService(updatedService);
                 }
-
-                serviceProvider.updateService(updatedService);
-              }
-              _toggleEdit();
-            },
-          ),
-        ],
+                _toggleEdit();
+              },
+            ),
+          ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          // Card per i dettagli e la modifica
+          // Card Dettagli Servizio e Modifica
           Card(
+            elevation: 2,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: _isEditing
-                  ? Column(
-                      children: [
-                        TextFormField(
-                          controller: _nameController,
-                          decoration: InputDecoration(labelText: l10n.name, icon: const Icon(Icons.miscellaneous_services)),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _priceController,
-                          decoration: InputDecoration(labelText: l10n.price, icon: const Icon(Icons.euro)),
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-                        ),
-                        const SizedBox(height: 8),
-                        TextFormField(
-                          controller: _timeController,
-                          decoration: InputDecoration(labelText: l10n.time, icon: const Icon(Icons.timer)),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(l10n.details, style: Theme.of(context).textTheme.titleLarge),
-                        const Divider(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(l10n.price, style: Theme.of(context).textTheme.bodyLarge),
-                            Text('€${currentService.currentPrice.toStringAsFixed(2)}', style: Theme.of(context).textTheme.titleMedium),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(l10n.time, style: Theme.of(context).textTheme.bodyLarge),
-                            Text('${currentService.time.toInt()} min', style: Theme.of(context).textTheme.titleMedium),
-                          ],
-                        ),
-                      ],
-                    ),
+                  ? _buildEditingView(l10n)
+                  : _buildDetailsView(context, l10n, currentService),
             ),
           ),
           const SizedBox(height: 16),
 
-          // Card statistiche
-          _buildStatCard(
-            title: l10n.totalStats,
-            stats: {
-              l10n.customerServed: totalUniqueClients.toString(),
-              l10n.earnings: '€${totalEarnings.toStringAsFixed(2)}',
-            },
+          // Card Statistiche (Espandibile)
+          Card(
+            elevation: 2,
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              leading: const Icon(Icons.bar_chart),
+              title: Text(l10n.statistics, style: Theme.of(context).textTheme.titleLarge),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+              collapsedShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      _buildStatSection(l10n.totalStats, {
+                        l10n.customerServed: totalUniqueClients.toString(),
+                        l10n.earnings: '€${totalEarnings.toStringAsFixed(2)}',
+                      }),
+                      const Divider(height: 24),
+                      _buildStatSection(l10n.last7days, {
+                        l10n.customerServed: uniqueClients7Days.toString(),
+                        l10n.earnings: '€${earnings7Days.toStringAsFixed(2)}',
+                      }),
+                      const Divider(height: 24),
+                      _buildStatSection(l10n.last30days, {
+                        l10n.customerServed: uniqueClients30Days.toString(),
+                        l10n.earnings: '€${earnings30Days.toStringAsFixed(2)}',
+                      }),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 16),
-          _buildStatCard(
-            title: l10n.last7days,
-            stats: {
-              l10n.customerServed: uniqueClients7Days.toString(),
-              l10n.earnings: '€${earnings7Days.toStringAsFixed(2)}',
-            },
-          ),
-          const SizedBox(height: 16),
-          _buildStatCard(
-            title: l10n.last30days,
-            stats: {
-              l10n.customerServed: uniqueClients30Days.toString(),
-              l10n.earnings: '€${earnings30Days.toStringAsFixed(2)}',
-            },
-          ),
-          const SizedBox(height: 16),
+
+          // Card Utilizzo Cliente (Espandibile)
           if (sortedClients.isNotEmpty)
             Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(l10n.clientUsage,
-                        style: Theme.of(context).textTheme.titleLarge),
-                    const SizedBox(height: 20),
-                    Row(
+              elevation: 2,
+              clipBehavior: Clip.antiAlias,
+              child: ExpansionTile(
+                leading: const Icon(Icons.pie_chart),
+                title: Text(l10n.clientUsage, style: Theme.of(context).textTheme.titleLarge),
+                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                collapsedShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: SizedBox(
-                            height: 200,
-                            child: PieChart(
-                              PieChartData(
-                                pieTouchData: PieTouchData(
-                                  touchCallback:
-                                      (FlTouchEvent event, pieTouchResponse) {
-                                    setState(() {
-                                      if (!event.isInterestedForInteractions ||
-                                          pieTouchResponse == null ||
-                                          pieTouchResponse.touchedSection == null) {
-                                        touchedIndex = -1;
-                                        return;
-                                      }
-                                      touchedIndex = pieTouchResponse
-                                          .touchedSection!.touchedSectionIndex;
-                                    });
-                                  },
-                                ),
-                                borderData: FlBorderData(show: false),
-                                sectionsSpace: 2,
-                                centerSpaceRadius: 40,
-                                sections: List.generate(
-                                  sortedClients.length > 5 ? 5 : sortedClients.length,
-                                  (i) {
-                                    final isTouched = i == touchedIndex;
-                                    final radius = isTouched ? 60.0 : 50.0;
-                                    final clientEntry = sortedClients[i];
-
-                                    return PieChartSectionData(
-                                      showTitle: false,
-                                      color: Colors.primaries[i % Colors.primaries.length],
-                                      value: clientEntry.value.toDouble(),
-                                      radius: radius,
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(
-                              sortedClients.length > 5 ? 5 : sortedClients.length,
-                              (i) {
-                                final clientEntry = sortedClients[i];
-                                final clientName = clientProvider.clients
-                                    .firstWhere((c) => c.id == clientEntry.key,
-                                        orElse: () => Client(id: '', name: l10n.unknown))
-                                    .name;
-                                return _buildLegendItem(
-                                  color: Colors.primaries[i % Colors.primaries.length],
-                                  text: '$clientName (${clientEntry.value})',
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                        _buildPieChart(sortedClients, clientProvider, l10n),
+                        const Divider(height: 30),
+                        Text(l10n.totalIncomePerClient, style: Theme.of(context).textTheme.titleMedium),
+                        const SizedBox(height: 16.0),
+                        ...sortedClientEarnings.map((entry) {
+                          final clientName = clientProvider.clients
+                              .firstWhere((c) => c.id == entry.key, orElse: () => Client(id: '', name: l10n.unknown))
+                              .name;
+                          return _buildStatRow(clientName, '€${entry.value.toStringAsFixed(2)}');
+                        }),
                       ],
                     ),
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
         ],
@@ -315,32 +250,134 @@ class _ServiceDetailsScreenState extends State<ServiceDetailsScreen> {
     // Implementazione futura
   }
 
-  Widget _buildStatCard(
-      {required String title, required Map<String, String> stats}) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(title, style: Theme.of(context).textTheme.titleLarge),
-            const Divider(height: 20),
-            ...stats.entries.map(
-              (entry) => Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(entry.key, style: Theme.of(context).textTheme.bodyLarge),
-                    Text(entry.value,
-                        style: Theme.of(context).textTheme.titleMedium),
-                  ],
+  Widget _buildDetailsView(BuildContext context, AppLocalizations l10n, Service service) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.details, style: Theme.of(context).textTheme.titleLarge),
+        const Divider(height: 20),
+        _buildStatRow(l10n.price, '€${service.currentPrice.toStringAsFixed(2)}'),
+        const SizedBox(height: 8),
+        _buildStatRow(l10n.time, '${service.time.toInt()} min'),
+      ],
+    );
+  }
+
+  Widget _buildEditingView(AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(l10n.editService, style: Theme.of(context).textTheme.titleLarge),
+        const Divider(height: 20),
+        TextFormField(
+          controller: _nameController,
+          decoration: InputDecoration(labelText: l10n.name, icon: const Icon(Icons.miscellaneous_services)),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _priceController,
+          decoration: InputDecoration(labelText: l10n.price, icon: const Icon(Icons.euro)),
+          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: _timeController,
+          decoration: InputDecoration(labelText: l10n.time, icon: const Icon(Icons.timer)),
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatRow(String title, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: Theme.of(context).textTheme.bodyLarge),
+          Text(value, style: Theme.of(context).textTheme.titleMedium),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatSection(String title, Map<String, String> stats) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title, style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 8),
+        ...stats.entries.map((entry) => _buildStatRow(entry.key, entry.value)),
+      ],
+    );
+  }
+
+  Widget _buildPieChart(List<MapEntry<String, int>> sortedClients, ClientProvider clientProvider, AppLocalizations l10n) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: SizedBox(
+            height: 150,
+            child: PieChart(
+              PieChartData(
+                pieTouchData: PieTouchData(
+                  touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                    setState(() {
+                      if (!event.isInterestedForInteractions || pieTouchResponse == null || pieTouchResponse.touchedSection == null) {
+                        touchedIndex = -1;
+                        return;
+                      }
+                      touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                    });
+                  },
+                ),
+                borderData: FlBorderData(show: false),
+                sectionsSpace: 2,
+                centerSpaceRadius: 30,
+                sections: List.generate(
+                  sortedClients.length > 5 ? 5 : sortedClients.length,
+                  (i) {
+                    final isTouched = i == touchedIndex;
+                    final radius = isTouched ? 50.0 : 40.0;
+                    final clientEntry = sortedClients[i];
+                    return PieChartSectionData(
+                      showTitle: false,
+                      color: Colors.primaries[i % Colors.primaries.length],
+                      value: clientEntry.value.toDouble(),
+                      radius: radius,
+                    );
+                  },
                 ),
               ),
             ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(width: 20),
+        Expanded(
+          flex: 3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: List.generate(
+              sortedClients.length > 5 ? 5 : sortedClients.length,
+              (i) {
+                final clientEntry = sortedClients[i];
+                final clientName = clientProvider.clients
+                    .firstWhere((c) => c.id == clientEntry.key, orElse: () => Client(id: '', name: l10n.unknown))
+                    .name;
+                return _buildLegendItem(
+                  color: Colors.primaries[i % Colors.primaries.length],
+                  text: '$clientName (${clientEntry.value})',
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 

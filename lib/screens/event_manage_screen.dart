@@ -28,6 +28,10 @@ class _EventManageScreenState extends State<EventManageScreen> {
   TimeOfDay? _startTime = TimeOfDay.now();
   TimeOfDay? _endTime;
   late TextEditingController _noteController;
+  late TextEditingController _dateController;
+  late TextEditingController _startTimeController;
+  late TextEditingController _endTimeController;
+  bool _isInitialized = false;
 
   @override
   void initState() {
@@ -38,33 +42,74 @@ class _EventManageScreenState extends State<EventManageScreen> {
       _startTime = event.startTime;
       _endTime = event.endTime;
       _selectedServices = List<Service>.from(event.services);
-      _noteController = TextEditingController(text: event.note);
+      _noteController = TextEditingController(text: event.note ?? '');
+      _dateController = TextEditingController();
+      _startTimeController = TextEditingController();
+      _endTimeController = TextEditingController();
 
       // Recupera il cliente dopo che il widget è stato costruito
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
         final clientProvider = Provider.of<ClientProvider>(context, listen: false);
-        if (mounted) {
+        final matchingClients = clientProvider.clients.where((c) => c.id == event.customerId);
+        if (mounted && matchingClients.isNotEmpty) {
           setState(() {
-            _selectedClient = clientProvider.clients.firstWhere((c) => c.id == event.customerId);
+            _selectedClient = matchingClients.first;
           });
         }
       });
     } else {
       _selectedDate = widget.date;
       _noteController = TextEditingController();
+      _dateController = TextEditingController();
+      _startTimeController = TextEditingController();
+      _endTimeController = TextEditingController();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _updateDateText();
+      if (widget.existingEvent != null) {
+        _updateStartTimeText();
+        _updateEndTimeText();
+      }
+      _isInitialized = true;
     }
   }
 
   @override
   void dispose() {
     _noteController.dispose();
+    _dateController.dispose();
+    _startTimeController.dispose();
+    _endTimeController.dispose();
     super.dispose();
   }
 
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  void _updateDateText() {
+    if (_selectedDate != null) {
+      _dateController.text = DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(_selectedDate!);
+    }
   }
 
+  void _updateStartTimeText() {
+    if (_startTime != null) {
+      _startTimeController.text = _startTime!.format(context);
+    }
+  }
+
+  void _updateEndTimeText() {
+    if (_endTime != null) {
+      _endTimeController.text = _endTime!.format(context);
+    }
+  }
+
+  String _formatTime(TimeOfDay time) {
+    return time.format(context);
+  }
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -78,139 +123,150 @@ class _EventManageScreenState extends State<EventManageScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: Text(appBarTitle),
         centerTitle: true,
+        titleTextStyle:
+            Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _saveEvent,
         child: const Icon(Icons.check),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-            key: _formKey,
-            child: ListView(
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
+            DropdownButtonFormField<Client>(
+              initialValue: _selectedClient,
+              decoration: InputDecoration(
+                labelText: l10n.customer,
+                prefixIcon: const Icon(Icons.person),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              items: clientProvider.clients.map((Client client) {
+                return DropdownMenuItem<Client>(
+                  value: client,
+                  child: Text(client.name),
+                );
+              }).toList(),
+              onChanged: (Client? newValue) {
+                setState(() {
+                  _selectedClient = newValue;
+                });
+              },
+              validator: (value) => value == null ? l10n.pleaseSelectCustomer : null,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _dateController,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: l10n.date,
+                prefixIcon: const Icon(Icons.calendar_today),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              onTap: _pickDate,
+              validator: (value) => (value == null || value.isEmpty) ? l10n.pleaseSelectDate : null,
+            ),
+            const SizedBox(height: 16),
+            Consumer<ServiceProvider>(builder: (context, serviceProvider, child) {
+              return InputDecorator(
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.design_services),
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  contentPadding: const EdgeInsets.fromLTRB(12, 12, 0, 12),
+                ),
+                child: MultiSelectDialogField<Service>(
+                  dialogHeight: MediaQuery.of(context).size.height * 0.4,
+                  initialValue: _selectedServices,
+                  items: serviceProvider.services.map((service) => MultiSelectItem<Service>(service, service.name)).toList(),
+                  title: Text(l10n.service),
+                  buttonText: Text(l10n.service),
+                  decoration: const BoxDecoration(),
+                  buttonIcon: const Icon(Icons.arrow_drop_down),
+                  onConfirm: (values) {
+                    setState(() {
+                      _selectedServices = values;
+                    });
+                    _setEndTime();
+                  },
+                  validator: (values) => (values == null || values.isEmpty) ? l10n.pleaseSelectService : null,
+                  chipDisplay: MultiSelectChipDisplay(
+                    onTap: (value) {
+                      setState(() {
+                        _selectedServices.remove(value);
+                        _setEndTime();
+                      });
+                    },
+                  ),
+                ),
+              );
+            }),
+            const SizedBox(height: 16),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Consumer<ServiceProvider>(builder: (context, serviceProvider, child) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ListTile(
-                            leading: const Icon(Icons.calendar_today),
-                            title: Text(l10n.date),
-                            subtitle: Text(_selectedDate == null
-                                ? l10n.pleaseSelectDate
-                                : DateFormat.yMMMd().format(_selectedDate!)),
-                            onTap: () async {
-                              final pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: _selectedDate ?? DateTime.now(),
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2050),
-                              );
-                              if (pickedDate != null) {
-                                setState(() {
-                                  _selectedDate = pickedDate;
-                                });
-                              }
-                            },
-                          ),
-                          const Divider(),
-                          DropdownButtonFormField<Client>(
-                            initialValue: _selectedClient,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration: InputDecoration(
-                                labelText: l10n.customer,
-                                border: InputBorder.none,
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 10.0)),
-                            items: clientProvider.clients.map((Client client) {
-                              return DropdownMenuItem<Client>(
-                                value: client,
-                                child: Text(client.name),
-                              );
-                            }).toList(),
-                            onChanged: (Client? newValue) {
-                              setState(() {
-                                _selectedClient = newValue;
-                              });
-                            },
-                            validator: (value) =>
-                                value == null ? l10n.pleaseSelectCustomer : null,
-                          ),
-                          const Divider(),
-                          MultiSelectDialogField<Service>(
-                            dialogHeight: MediaQuery.of(context).size.height * 0.4,
-                            initialValue: _selectedServices,
-                            autovalidateMode: AutovalidateMode.onUserInteraction,
-                            decoration:
-                                const BoxDecoration(border: Border(bottom: BorderSide.none)),
-                            items: serviceProvider.services
-                                .map((service) =>
-                                    MultiSelectItem<Service>(service, service.name))
-                                .toList(),
-                            title: Text(l10n.service),
-                            buttonText: Text(l10n.service),
-                            onConfirm: (values) {
-                              setState(() {
-                                _selectedServices = values;
-                              });
-                              _setEndTime();
-                            },
-                            validator: (values) =>
-                                (values == null || values.isEmpty)
-                                    ? l10n.pleaseSelectService
-                                    : null,
-                            chipDisplay: MultiSelectChipDisplay(
-                              onTap: (value) {
-                                setState(() {
-                                  _selectedServices.remove(value);
-                                });
-                              },
-                            ),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            leading: const Icon(Icons.access_time),
-                            title: Text(l10n.startTime),
-                            subtitle: Text(_startTime == null
-                                ? l10n.pleaseSelectTime
-                                : _formatTime(_startTime!)),
-                            onTap: () => _pickTime(true),
-                          ),
-                          const Divider(),
-                          ListTile(
-                            leading: const Icon(Icons.access_time_filled),
-                            title: Text(l10n.endTime),
-                            subtitle: Text(_endTime == null
-                                ? l10n.pleaseSelectTime
-                                : _formatTime(_endTime!)),
-                            onTap: () => _pickTime(false),
-                            enabled: _startTime != null,
-                          ),
-                          const Divider(),
-                          // inserisci una sezione per l'inserimento di note
-                          TextFormField(                            
-                            controller: _noteController,
-                            decoration: InputDecoration(
-                              labelText: "Note",
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
+                Expanded(
+                  child: TextFormField(
+                    controller: _startTimeController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: l10n.startTime,
+                      prefixIcon: const Icon(Icons.access_time),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    onTap: () => _pickTime(true),
+                    validator: (value) => (value == null || value.isEmpty) ? l10n.pleaseSelectTime : null,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: TextFormField(
+                    controller: _endTimeController,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: l10n.endTime,
+                      prefixIcon: const Icon(Icons.access_time_filled),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    onTap: () => _pickTime(false),
+                    validator: (value) => (value == null || value.isEmpty) ? l10n.pleaseSelectTime : null,
                   ),
                 ),
               ],
-            )),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _noteController,
+              decoration: InputDecoration(
+                labelText: l10n.noteLabel,
+                prefixIcon: const Icon(Icons.notes),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              maxLines: 3,
+              textCapitalization: TextCapitalization.sentences,
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _pickDate() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2050),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _updateDateText();
+      });
+    }
   }
 
   Future<void> _pickTime(bool isStartTime) async {
@@ -227,12 +283,14 @@ class _EventManageScreenState extends State<EventManageScreen> {
       setState(() {
         if (isStartTime) {
           _startTime = pickedTime;
+          _updateStartTimeText();
           // Opzionale: resetta l'ora di fine se è precedente a quella di inizio
           if (_endTime != null &&
               (pickedTime.hour > _endTime!.hour ||
                   (pickedTime.hour == _endTime!.hour &&
                       pickedTime.minute >= _endTime!.minute))) {
             _endTime = null;
+            _endTimeController.text = '';
           }
           _setEndTime();
         } else {
@@ -247,6 +305,7 @@ class _EventManageScreenState extends State<EventManageScreen> {
             );
           } else {
             _endTime = pickedTime;
+            _updateEndTimeText();
           }
         }
       });
@@ -320,6 +379,7 @@ class _EventManageScreenState extends State<EventManageScreen> {
       DateTime startDateTime = DateTime(2000, 1, 1, _startTime!.hour, _startTime!.minute);
       DateTime endDateTime = startDateTime.add(Duration(minutes: totalMinutes));
       _endTime = TimeOfDay.fromDateTime(endDateTime);
+      _updateEndTimeText();
     }
   }
 }

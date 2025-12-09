@@ -75,16 +75,24 @@ class _ServicesScreenState extends State<ServicesScreen> {
       },
       addItemToProvider: (provider, item) => provider.addService(item),
       itemBuilder: (ctx, service) {
-        return ListTile(
-          leading: const CircleAvatar(child: Icon(Icons.miscellaneous_services)),
-          title: Text(service.name),
-          subtitle: Text('${service.priceHistory.last.price.toStringAsFixed(2)} €'),
-          onTap: () => Navigator.of(ctx).push(
-            MaterialPageRoute(
-              builder: (innerContext) => ServiceDetailsScreen(service: service),
+        return Card(
+          margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          elevation: 2.0,
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Theme.of(ctx).primaryColorLight,
+              child: const Icon(Icons.miscellaneous_services, color: Colors.white),
             ),
+            title: Text(service.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('€ ${service.currentPrice.toStringAsFixed(2)}'),
+            trailing: Text('${service.time.toInt()} min', style: Theme.of(ctx).textTheme.bodyMedium),
+            onTap: () => Navigator.of(ctx).push(
+              MaterialPageRoute(
+                builder: (innerContext) => ServiceDetailsScreen(service: service),
+              ),
+            ),
+            onLongPress: () => _showRemoveServiceDialog(service),
           ),
-          onLongPress: () => _showRemoveServiceDialog(service),
         );
       },
     );
