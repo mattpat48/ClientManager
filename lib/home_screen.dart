@@ -22,14 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
 		SettingsScreen(),
 	];
 
-	void _onItemTapped(int index) {
-		_pageController.animateToPage(
-			index,
-			duration: const Duration(milliseconds: 300),
-			curve: Curves.easeInOut,
-		);
-	}
-
 	@override
 	void initState() {
 		super.initState();
@@ -70,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
 			),
 			],
 			currentIndex: _selectedIndex,
-			onTap: _onItemTapped,
 		),
 		);
 	}
